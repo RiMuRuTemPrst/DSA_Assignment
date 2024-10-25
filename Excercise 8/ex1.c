@@ -156,21 +156,24 @@ void sortListByMaSV(list* lst) {
     }
 }
 
-// Hàm thêm sinh viên vào danh sách đã sắp xếp theo MSSV và sắp xếp lại
-void addStudentAndSort(list* lst, student sv) {
-    addStudent(lst, sv); // Thêm sinh viên mới vào cuối danh sách
-    sortListByMaSV(lst); // Sắp xếp lại danh sách theo MSSV
+// Add student and sort again
+void addStudentAndSort(list* lst, student sv) 
+{
+    addStudent(lst, sv); 
+    sortListByMaSV(lst); 
 }
 
 // Hàm in thông tin sinh viên
-void printStudent(student sv) {
+void printStudent(student sv) 
+{
     printf("MaSV: %s, HoTen: %s, GioiTinh: %s, NgaySinh: %02d/%02d/%04d, DiaChi: %s, Lop: %s, Khoa: %s\n",
         sv.maSV, sv.hoTen, sv.gioitinh ? "Nam" : "Nu", sv.ngaysinh.ngay, sv.ngaysinh.thang, sv.ngaysinh.nam,
         sv.diachi, sv.lop, sv.khoa);
 }
 
-// Hàm in danh sách sinh viên
-void printList(list lst) {
+// Print List Student
+void printList(list lst) 
+{
     struct Node* current = lst.first;
     while (current != NULL) {
         printStudent(current->data);
