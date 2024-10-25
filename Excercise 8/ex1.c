@@ -61,7 +61,7 @@ typedef struct List
 void inputStudent(student *sv) {
     /**Enter Student Code */
     printf("Nhap ma SV: ");
-    scanf("%s", sv->maSV);
+    gets(sv->maSV);
     /**Enter Student Name */
     printf("Nhap ho ten: ");
     getchar(); // Clear buffer
@@ -178,27 +178,7 @@ void printList(list lst) {
     }
 }
 
-// Hàm nhập thông tin sinh viên
-void inputStudent(student* sv) {
-    printf("Nhap ma sinh vien: ");
-    scanf("%s", sv->maSV);
-    printf("Nhap ho ten: ");
-    getchar(); // Xóa ký tự newline còn lại từ buffer
-    fgets(sv->hoTen, sizeof(sv->hoTen), stdin);
-    sv->hoTen[strcspn(sv->hoTen, "\n")] = '\0'; // Xóa newline
-    printf("Nhap gioi tinh (1: Nam, 0: Nu): ");
-    scanf("%d", &sv->gioitinh);
-    printf("Nhap ngay sinh (dd mm yyyy): ");
-    scanf("%d %d %d", &sv->ngaysinh.ngay, &sv->ngaysinh.thang, &sv->ngaysinh.nam);
-    printf("Nhap dia chi: ");
-    getchar(); // Xóa ký tự newline còn lại từ buffer
-    fgets(sv->diachi, sizeof(sv->diachi), stdin);
-    sv->diachi[strcspn(sv->diachi, "\n")] = '\0'; // Xóa newline
-    printf("Nhap lop: ");
-    scanf("%s", sv->lop);
-    printf("Nhap khoa: ");
-    scanf("%s", sv->khoa);
-}
+
 
 int main() {
     list lst;
