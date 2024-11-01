@@ -119,8 +119,10 @@ struct Node* createNode(student sv)
  */
 int compare(student sv1, student sv2) {
     int i = 0;
-    while (sv1.maSV[i] != '\0' && sv2.maSV[i] != '\0') {
-        if (sv1.maSV[i] != sv2.maSV[i]) {
+    while (sv1.maSV[i] != '\0' && sv2.maSV[i] != '\0') 
+    {
+        if (sv1.maSV[i] != sv2.maSV[i]) 
+        {
             return sv1.maSV[i] - sv2.maSV[i];
         }
         i++;
@@ -131,23 +133,29 @@ int compare(student sv1, student sv2) {
 /**Add New Student */
 void addStudent(list* lst, student sv) {
     struct Node* newNode = createNode(sv);
-    if (lst->first == NULL) {
+    if (lst->first == NULL) 
+    {
         lst->first = lst->last = newNode;
-    } else {
+    } else 
+    {
         lst->last->next = newNode;
         lst->last = newNode;
     }
 }
 /**Sort Student by Student Code */
 void sortListByMaSV(list* lst) {
-    if (lst->first == NULL || lst->first->next == NULL) {
+    if (lst->first == NULL || lst->first->next == NULL) 
+    {
         return; //Dont' need to sort if just 1 elements
     }
     struct Node *i, *j;
     student temp;
-    for (i = lst->first; i != NULL; i = i->next) {
-        for (j = i->next; j != NULL; j = j->next) {
-            if (compare(i->data, j->data) > 0) {
+    for (i = lst->first; i != NULL; i = i->next) 
+    {
+        for (j = i->next; j != NULL; j = j->next) 
+        {
+            if (compare(i->data, j->data) > 0) 
+            {
                 temp = i->data;
                 i->data = j->data;
                 j->data = temp;
@@ -175,7 +183,8 @@ void printStudent(student sv)
 void printList(list lst) 
 {
     struct Node* current = lst.first;
-    while (current != NULL) {
+    while (current != NULL) 
+    {
         printStudent(current->data);
         current = current->next;
     }
@@ -193,7 +202,8 @@ int main() {
     scanf("%d", &n);
 
     // Nhập danh sách sinh viên
-    for (i = 0; i < n; i++) {
+    for (i = 0; i < n; i++) 
+    {
         printf("\nNhap thong tin sinh vien thu %d:\n", i + 1);
         inputStudent(&sv);
         addStudent(&lst, sv);
