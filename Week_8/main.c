@@ -12,6 +12,7 @@ In ra tổng của 2 đa thức h(x) = f(x) + g(x) (*)
  * @copyright Copyright (c) 2024
  * 
  */
+
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -28,14 +29,13 @@ typedef struct Node
 
 
 /**
- * @brief Tạo một node trong danh sách liên kết
- * 
- * @param coefficient Hệ số của đa thức
- * @param exponent Mũ của đa thức
- * 
- * @return Node* con trỏ đến node mới được tạo
+ * @brief Allocate memory for a node in a linked list and assign its data with  coefficient and exponent
+ * @param coefficient Coefficient of the term
+ * @param exponent Exponent of the term
+ * @return pointer to the newly allocated node or  NULL if memory allocation failed
+ * @note The newly allocated node is not linked to any other node in the linked list
  */
-Node* createNode(int coefficient, int exponent) 
+Node* createNode(int coefficient, int exponent)
 {
     Node* newNode = (Node*)malloc(sizeof(Node));
     newNode->coefficient = coefficient;
@@ -46,13 +46,13 @@ Node* createNode(int coefficient, int exponent)
 
 
 /**
- * @brief Insert a node into the linked list in ascending order of exponent
+ * @brief Insert a node into the linked list in descending order of exponent
  * 
- * @param head Head of the linked list
- * @param coefficient Coefficient of the polynomial
- * @param exponent Exponent of the polynomial
+ * @param head: Pointer to the head of the linked list
+ * @param coefficient: Coefficient of the term to be inserted
+ * @param exponent: Exponent of the term to be inserted
  * 
- * @note The time complexity of this function is O(n) where n is the length of the linked list
+ * @note If a node with the same exponent already exists, it will be inserted before it
  */
 void insertNode(Node** head, int coefficient, int exponent) 
 {
@@ -61,8 +61,7 @@ void insertNode(Node** head, int coefficient, int exponent)
     {
         newNode->next = *head;
         *head = newNode;
-    } else
-    {
+    } else {
         Node* current = *head;
         while (current->next != NULL && current->next->exponent > exponent) 
         {
@@ -75,38 +74,39 @@ void insertNode(Node** head, int coefficient, int exponent)
 
 
 /**
- * @brief print the polynomial
+ * @brief Prints the polynomial in the format ax^n + bx^(n-1) + ... + cx + d
  * 
  * @param head: First node in the linked list
  * 
  * @note Print the polynomial in the following format: ax^n + bx^(n-1) + ... + cx + d
  */
-void printPolynomial(Node* head)
+
+void printPolynomial(Node* head) 
 {
     Node* current = head;
     while (current != NULL) {
-        if (current->coefficient > 0 && current != head)
+        if (current->coefficient > 0 && current != head) 
         {
             printf(" + ");
         }
         if (current->exponent == 0) 
         {
-            printf(" %d", current->coefficient);
+            printf("%d", current->coefficient);
         } else if (current->exponent == 1) 
         {
-            if (current->coefficient == 1)
+            if (current->coefficient == 1) 
             {
-                printf(" x");
+                printf("x");
+            } else {
+                printf("%dx", current->coefficient);
             }
-            else printf(" %dx", current->coefficient);
         } else 
-        {   
-            if (current->coefficient == 1)
-            {
-                printf(" x^%d", current->exponent);
+        {
+            if (current->coefficient == 1) {
+                printf("x^%d", current->exponent);
+            } else {
+                printf("%dx^%d", current->coefficient, current->exponent);
             }
-            else
-            printf(" %dx^%d", current->coefficient, current->exponent);
         }
         current = current->next;
     }
@@ -115,51 +115,76 @@ void printPolynomial(Node* head)
 
 
 /**
- * @brief Tinh tong hai da thuc
+ * @brief Add two polynomials and return the result as a linked list
  * 
- * @param poly1 da thuc thu nhat
- * @param poly2 da thuc thu hai
+ * @param poly1 The first polynomial
+ * @param poly2 The second polynomial
+ * @return The linked list representing the result of adding the two polynomials
  * 
- * @return da thuc tong
- * 
- * @note chay tuong tu nhu merge sort
+ * @note The linked list is in descending order of exponent
  */
-Node* addPolynomials(Node* poly1, Node* poly2) 
-{
+Node* addPolynomials(Node* poly1, Node* poly2) {
     Node* result = NULL;
-    while (poly1 != NULL || poly2 != NULL) 
-    {
+
+    while (poly1 != NULL || poly2 != NULL) {
         int coef, exp;
-        if (poly1 == NULL) 
-        {
+
+        if (poly1 == NULL) {
             coef = poly2->coefficient;
             exp = poly2->exponent;
             poly2 = poly2->next;
-        } else if (poly2 == NULL) 
-        {
+        } else if (poly2 == NULL) {
             coef = poly1->coefficient;
             exp = poly1->exponent;
             poly1 = poly1->next;
-        } else if (poly1->exponent > poly2->exponent) 
-        {
+        } else if (poly1->exponent > poly2->exponent) {
             coef = poly1->coefficient;
             exp = poly1->exponent;
             poly1 = poly1->next;
-        } else if (poly1->exponent < poly2->exponent) 
-        {
+        } else if (poly1->exponent < poly2->exponent) {
             coef = poly2->coefficient;
             exp = poly2->exponent;
             poly2 = poly2->next;
-        } else 
-        {
+        } else {
             coef = poly1->coefficient + poly2->coefficient;
             exp = poly1->exponent;
+            Node* temp1 = poly1;
+            Node* temp2 = poly2;
             poly1 = poly1->next;
             poly2 = poly2->next;
+
+            // Giải phóng bộ nhớ cho các node có hệ số bằng 0
+            if (coef == 0) {
+                free(temp1);
+                free(temp2);
+                continue;
+            }
         }
-        insertNode(&result, coef, exp);
+
+        if (coef != 0) {
+            insertNode(&result, coef, exp);
+        }
     }
+
     return result;
+}
+
+
+void inputPolynomial(Node** poly) \
+{
+    int n;
+    printf("Enter the number of the polynomial ");
+    scanf("%d", &n);
+    for (int i = 0; i < n; i++) 
+    {
+        int coefficient, exponent;
+        printf("Enter the cofficient and exponent of term %d: ", i + 1);
+        printf("\nCoefficient = ");
+        scanf("%d", &coefficient);
+        printf("Exponent = ");
+        scanf("%d", &exponent);
+        insertNode(poly, coefficient, exponent);
+    }
 }
 
 int main() 
@@ -167,15 +192,12 @@ int main()
     Node* f = NULL;
     Node* g = NULL;
 
-    insertNode(&f, 5, 10);
-    insertNode(&f, 1, 0);
+    printf("Enter the polynomial f(x):\n");
+    inputPolynomial(&f);
+    printf("Enter the polynomial g(x):\n");
+    inputPolynomial(&g);
 
-    insertNode(&g, 10, 15);
-    insertNode(&g, -2, 7);
-    insertNode(&g, 3, 2);
-    insertNode(&g, -7, 0);
-
-    printf("f(x) = ");
+    printf("f(x) = "); 
     printPolynomial(f);
 
     printf("g(x) = ");
