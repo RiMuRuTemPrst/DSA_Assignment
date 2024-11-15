@@ -46,7 +46,7 @@ Node* createNode(const char* word) {
 }
 
 /**
- * @brief Compare two words to see if they are the same
+ * @brief Compare two words to see if they are the same 
  * @param word1 First word to compare
  * @param word2 Second word to compare
  * @return 1 if the words are the same, 0 if they are not
