@@ -10,3 +10,5 @@ Khai báo cấu trúc danh sách liên kết. Các thông tin chứa ở mỗi n
 Xác định từ xuất hiện nhiều nhất trong câu  
 Nếu xuất hiện từ láy (cấu thành từ hai từ giống nhau ví dụ: xanh xanh), thực hiện loại bỏ một từ 
 Thực hiện đếm số từ vựng xuất hiện trong câu. 
+
+Extra Exercise: Cài đặt giải thuật xoá node trong 1 danh sách ở 3 vị trí: Đầu danh sách, cuối danh sách và sau 1 nodec cho trước 
