@@ -20,14 +20,16 @@ Người ta muốn sao lưu các file trong thư mục trên vào một ổ USB 
 #define STR_LEN 50
 #define USB_SIZE 32 * 1024 * 1024 // USB 32GB
 
-typedef struct file_infor {
+typedef struct file_infor 
+{
     char name[STR_LEN]; // File Name
     int size;           // File Size (Unit: KB)
     int timestamp;      // File Created how many days ago
     struct file_infor* next;
 } fileNode;
 
-typedef struct folder_struct {
+typedef struct folder_struct 
+{
     fileNode *file;
     struct folder_struct *next;
 } folderNode;
@@ -108,7 +110,8 @@ void insertFile(folderNode **head, const char* name, int size, int timestamp)
  * This function traverses the linked list, accumulating the size of each file,
  * and returns the total size of all files in the list.
  */
-int calculateTotalSize(folderNode* head) {
+int calculateTotalSize(folderNode* head) 
+{
     int totalSize = 0;
     while (head != NULL) {
         totalSize += head->file->size;
@@ -128,8 +131,10 @@ int calculateTotalSize(folderNode* head) {
  * It iterates through the list, swapping adjacent file nodes if they are out of order,
  * and repeats the process until no more swaps are needed.
  */
-void sort_file_by_size(folderNode** head) {
-    if (*head == NULL || (*head)->next == NULL) {
+void sort_file_by_size(folderNode** head) 
+{
+    if (*head == NULL || (*head)->next == NULL) 
+    {
         return; 
     }
 
@@ -142,7 +147,8 @@ void sort_file_by_size(folderNode** head) {
         ptr1 = *head;
 
         while (ptr1->next != lptr) { 
-            if (ptr1->file->size < ptr1->next->file->size) {
+            if (ptr1->file->size < ptr1->next->file->size) 
+            {
                 fileNode* tempFile = ptr1->file;
                 ptr1->file = ptr1->next->file;
                 ptr1->next->file = tempFile;
@@ -163,24 +169,30 @@ void sort_file_by_size(folderNode** head) {
  * into a USB drive of a predefined size limit. Files are added until the total size 
  * exceeds the USB size limit, at which point excess files are removed from the list.
  */
-void fitIntoUSB(folderNode** head) {
+void fitIntoUSB(folderNode** head) 
+{
     sort_file_by_size(head);
 
     int currentSize = 0;
     folderNode* current = *head;
     folderNode* prev = NULL;
 
-    while (current != NULL) {
-        if (currentSize + current->file->size <= USB_SIZE) {
+    while (current != NULL) 
+    {
+        if (currentSize + current->file->size <= USB_SIZE) 
+        {
             currentSize += current->file->size;
             prev = current;
             current = current->next;
-        } else {
+        } else 
+        {
             folderNode* toDelete = current;
             current = current->next;
-            if (prev != NULL) {
+            if (prev != NULL) 
+            {
                 prev->next = current;
-            } else {
+            } else 
+            {
                 *head = current;
             }
             free(toDelete->file);
@@ -197,14 +209,16 @@ void fitIntoUSB(folderNode** head) {
  * @note This function traverses the linked list and prints the name,
  * size, and timestamp of each file node.
  */
-void printList(folderNode* head) {
+void printList(folderNode* head) 
+{
     while (head != NULL) {
         printf("File: %s, Size: %d, Timestamp: %d\n", head->file->name, head->file->size, head->file->timestamp);
         head = head->next;
     }
 }
 
-int main() {
+int main() 
+{
     folderNode* head = NULL;
 
     // Adder file to Folder
